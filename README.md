@@ -86,7 +86,32 @@ Ketika status peminjaman berubah menjadi `returned`, trigger akan otomatis menam
 ```php
 $conn->query("CALL kembalikan_buku($id_peminjaman)");
 ```
+## 🗂️ Fragmentasi Database
 
+Pada sistem ini diterapkan fragmentasi horizontal pada tabel `peminjaman` berdasarkan status transaksi. Data peminjaman dipisahkan menjadi dua tabel, yaitu `peminjaman_aktif` untuk transaksi yang masih berlangsung dan `peminjaman_selesai` untuk transaksi yang telah selesai. Dengan pemisahan ini, data dapat dikelola dan diakses dengan lebih terstruktur sesuai kebutuhan sistem.
+
+<img src="img/fragmentasi.png">
+
+Query fragmentasi yang digunakan:
+
+```sql
+DROP TABLE IF EXISTS peminjaman_aktif;
+DROP TABLE IF EXISTS peminjaman_selesai;
+
+-- Fragmentasi Horizontal: Peminjaman Aktif
+CREATE TABLE peminjaman_aktif AS
+SELECT *
+FROM peminjaman
+WHERE status = 'borrowed';
+
+-- Fragmentasi Horizontal: Peminjaman Selesai
+CREATE TABLE peminjaman_selesai AS
+SELECT *
+FROM peminjaman
+WHERE status = 'returned';
+```
+
+Implementasi fragmentasi dapat dilihat pada halaman transaksi peminjaman yang memisahkan data berdasarkan status **Dipinjam** dan **Dikembalikan**, sehingga administrator dapat lebih mudah memantau transaksi yang masih aktif maupun yang telah selesai.
 
 ## 🗃️ Backup Database
 Untuk menjaga keamanan dan ketersediaan data, sistem dilengkapi fitur backup database menggunakan `mysqldump`.
