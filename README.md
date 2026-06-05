@@ -1,0 +1,2 @@
+# 📚 PustakaOne (Proyek UAP)
+PustakaOne merupakan sistem informasi perpustakaan berbasis web yang dibangun menggunakan PHP dan MySQL. Sistem ini digunakan untuk mengelola data buku, anggota, peminjaman, pengembalian, dan laporan perpustakaan. Pada proyek ini juga diimplementasikan beberapa materi basis data seperti stored procedure, trigger, fragmentasi database, backup database, dan task scheduler.
